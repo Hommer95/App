@@ -1,10 +1,27 @@
 import 'package:flutter/material.dart';
 
-class TransactionForm extends StatelessWidget {
+class TransactionForm extends StatefulWidget {
+  final void Function(String, double) onSubmit;
+
+  const TransactionForm(param0, {super.key, required this.onSubmit});
+
+  @override
+  State<TransactionForm> createState() => _TransactionFormState();
+}
+
+class _TransactionFormState extends State<TransactionForm> {
   final titleController = TextEditingController();
+
   final valueController = TextEditingController();
 
-  TransactionForm({super.key});
+  _submitForm() {
+    final title = titleController.text;
+    final values = double.tryParse(valueController.text) ?? 0.0;
+    if (title.isEmpty || values <= 0) {
+      return;
+    }
+    widget.onSubmit(title, values);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,12 +33,16 @@ class TransactionForm extends StatelessWidget {
           children: <Widget>[
             TextField(
               controller: titleController,
+              onSubmitted: (_) => _submitForm(),
               decoration: const InputDecoration(
                 labelText: 'Titulo',
               ),
             ),
             TextField(
               controller: valueController,
+              keyboardType:
+                  const TextInputType.numberWithOptions(decimal: true),
+              onSubmitted: (_) => _submitForm(),
               decoration: const InputDecoration(
                 labelText: 'Valor (R\$)',
               ),
@@ -34,12 +55,7 @@ class TransactionForm extends StatelessWidget {
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.purple),
                   ),
-                  onPressed: () {
-                    // ignore: avoid_print
-                    print(titleController.text);
-                    // ignore: avoid_print
-                    print(valueController.text);
-                  },
+                  onPressed: _submitForm,
                   child: const Text('Nova Transação'),
                 ),
               ],
