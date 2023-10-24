@@ -54,7 +54,7 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // ignore: unused_element
-  _opentransactionFormModal() {
+  _opentransactionFormModal(BuildContext context) {
     showModalBottomSheet(
         context: context,
         builder: (_) {
@@ -97,7 +97,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () => _opentransactionFormModal(context),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
