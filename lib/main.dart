@@ -30,22 +30,22 @@ class _MyHomePageState extends State<MyHomePage> {
     Transaction(
         id: 't1',
         title: 'Novo Tenis de Corrida',
-        values: 310.76,
+        value: 310.76,
         date: DateTime.now()),
     Transaction(
       id: 't2',
       title: 'Conta de Luz',
-      values: 211.30,
+      value: 211.30,
       date: DateTime.now(),
     ),
   ];
 
   // ignore: unused_element
-  _addTransaction(String title, double values) {
+  _addTransaction(String title, double value) {
     final newTransacion = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
-      values: values,
+      value: value,
       date: DateTime.now(),
     );
     setState(() {
@@ -58,12 +58,7 @@ class _MyHomePageState extends State<MyHomePage> {
     showModalBottomSheet(
         context: context,
         builder: (_) {
-          // ignore: avoid_types_as_parameter_names
-          return TransactionForm(
-            Null,
-            // ignore: avoid_types_as_parameter_names
-            onSubmit: (String, double) {},
-          );
+          return TransactionForm(_addTransaction);
         });
   }
 
