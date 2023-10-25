@@ -2,11 +2,13 @@
 
 // ignore_for_file: non_constant_identifier_names
 
-import 'package:expenses/compenents/transaction_form.dart';
+import 'package:expenses/components/chart.dart';
+import 'package:expenses/components/transaction_form.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'compenents/transaction_list.dart';
+import 'components/transaction_list.dart';
 import 'models/transaction.dart';
+import 'components/chart.dart';
 
 main() => runApp(const ExpensesesApp());
 
@@ -50,19 +52,28 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final _transactions = [
+  final List<Transaction> _transactions = [
     Transaction(
-        id: 't1',
-        title: 'Novo Tenis de Corrida',
-        value: 310.76,
-        date: DateTime.now()),
+      id: 't0',
+      title: 'Conta Antiga',
+      value: 400.00,
+      date: DateTime.now().subtract(const Duration(days: 33)),
+    ),
     Transaction(
       id: 't2',
       title: 'Conta de Luz',
       value: 211.30,
-      date: DateTime.now(),
+      date: DateTime.now().subtract(const Duration(days: 4)),
     ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _transactions.where((tr) {
+      return tr.date.isAfter(DateTime.now().subtract(
+        const Duration(days: 7),
+      ));
+    }).toList();
+  }
 
   // ignore: unused_element
   _addTransaction(String title, double value) {
@@ -103,14 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            const SizedBox(
-              width: double.infinity,
-              child: Card(
-                color: Colors.blue,
-                elevation: 5,
-                child: Text('Grafico'),
-              ),
-            ),
+            Chart(recentTransaction: _recentTransactions),
             TransactionList(_transactions),
           ],
         ),
