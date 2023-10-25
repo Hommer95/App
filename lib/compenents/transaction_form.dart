@@ -21,7 +21,6 @@ class _TransactionFormState extends State<TransactionForm> {
       return;
     }
     widget.onSubmit(title, value);
-    Navigator.of(context).pop();
   }
 
   @override
