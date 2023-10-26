@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'components/transaction_list.dart';
 import 'models/transaction.dart';
-import 'components/chart.dart';
 
 main() => runApp(const ExpensesesApp());
 
@@ -22,15 +21,15 @@ class ExpensesesApp extends StatelessWidget {
       home: MyHomePage(),
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
-          primary: Colors.purple,
-          secondary: Colors.amber,
+          primary: Colors.black,
+          secondary: Colors.grey[600],
         ),
         textTheme: tema.textTheme.copyWith(
           titleLarge: const TextStyle(
             fontFamily: 'Roboto',
             fontSize: 18,
             fontWeight: FontWeight.bold,
-            color: Colors.black,
+            color: Colors.blue,
           ),
         ),
         appBarTheme: const AppBarTheme(
@@ -52,20 +51,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't0',
-      title: 'Conta Antiga',
-      value: 400.00,
-      date: DateTime.now().subtract(const Duration(days: 33)),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Conta de Luz',
-      value: 211.30,
-      date: DateTime.now().subtract(const Duration(days: 4)),
-    ),
-  ];
+  final List<Transaction> _transactions = [];
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -76,17 +62,23 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   // ignore: unused_element
-  _addTransaction(String title, double value) {
+  _addTransaction(String title, double value, DateTime date) {
     final newTransacion = Transaction(
       id: Random().nextDouble().toString(),
       title: title,
       value: value,
-      date: DateTime.now(),
+      date: date,
     );
     setState(() {
       _transactions.add(newTransacion);
     });
     Navigator.of(context).pop();
+  }
+
+  _removeTransaction(String id) {
+    setState(() {
+      _transactions.removeWhere((tr) => tr.id == id);
+    });
   }
 
   // ignore: unused_element
@@ -115,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Chart(recentTransaction: _recentTransactions),
-            TransactionList(_transactions),
+            TransactionList(_transactions, _removeTransaction),
           ],
         ),
       ),
