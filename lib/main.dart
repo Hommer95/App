@@ -22,15 +22,7 @@ class ExpensesesApp extends StatelessWidget {
       theme: tema.copyWith(
         colorScheme: tema.colorScheme.copyWith(
           primary: Colors.black,
-          secondary: Colors.grey[600],
-        ),
-        textTheme: tema.textTheme.copyWith(
-          titleLarge: const TextStyle(
-            fontFamily: 'Roboto',
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: Colors.blue,
-          ),
+          secondary: Colors.yellow[700],
         ),
         appBarTheme: const AppBarTheme(
           titleTextStyle: TextStyle(
@@ -94,7 +86,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Despesas Pessoais'),
+        title: Text(
+          'Despesas Pessoais',
+          style: TextStyle(
+            color: Colors.yellow[700],
+          ),
+        ),
         actions: <Widget>[
           IconButton(
             icon: const Icon(Icons.add),

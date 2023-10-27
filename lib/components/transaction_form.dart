@@ -53,7 +53,12 @@ class _TransactionFormState extends State<TransactionForm> {
             TextField(
               controller: _titleController,
               onSubmitted: (_) => _submitForm(),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Colors.grey[850],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
                 labelText: 'Titulo',
               ),
             ),
@@ -62,7 +67,12 @@ class _TransactionFormState extends State<TransactionForm> {
               onSubmitted: (_) => _submitForm(),
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
+                labelStyle: TextStyle(
+                  color: Colors.grey[850],
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15,
+                ),
                 labelText: 'Valor (R\$)',
               ),
             ),
@@ -80,8 +90,8 @@ class _TransactionFormState extends State<TransactionForm> {
                   ),
                   TextButton(
                     style: ButtonStyle(
-                        foregroundColor:
-                            MaterialStateProperty.all<Color>(Colors.purple)),
+                        foregroundColor: MaterialStateProperty.all<Color>(
+                            Colors.yellow[700]!)),
                     onPressed: _showDatePicker,
                     child: const Text(
                       'Selecionar Data',
@@ -98,8 +108,8 @@ class _TransactionFormState extends State<TransactionForm> {
               children: <Widget>[
                 ElevatedButton(
                   style: ButtonStyle(
-                    foregroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 244, 230, 247)),
+                    foregroundColor:
+                        MaterialStateProperty.all<Color>(Colors.yellow[700]!),
                   ),
                   onPressed: _submitForm,
                   child: const Text('Nova Transação'),
