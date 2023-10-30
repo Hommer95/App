@@ -16,23 +16,21 @@ class ExpensesesApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData tema = ThemeData();
     return MaterialApp(
-      home: MyHomePage(),
-      theme: tema.copyWith(
-        colorScheme: tema.colorScheme.copyWith(
-          primary: Colors.black,
-          secondary: Colors.yellow[700],
-        ),
-        appBarTheme: const AppBarTheme(
-          titleTextStyle: TextStyle(
-            fontFamily: 'PlaypenSans',
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+        home: MyHomePage(),
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSwatch().copyWith(
+            primary: Colors.black,
+            secondary: Colors.amber,
           ),
-        ),
-      ),
-    );
+          appBarTheme: const AppBarTheme(
+            titleTextStyle: TextStyle(
+              fontFamily: 'PlaypenSans',
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ));
   }
 }
 
@@ -44,6 +42,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final List<Transaction> _transactions = [];
+  late bool _showChart = false;
 
   List<Transaction> get _recentTransactions {
     return _transactions.where((tr) {
@@ -84,27 +83,51 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Despesas Pessoais',
-          style: TextStyle(
-            color: Colors.yellow[700],
-          ),
+    late bool isLandscape =
+        MediaQuery.of(context).orientation == Orientation.landscape;
+
+    final appBar = AppBar(
+      title: Text(
+        'Despesas Pessoais',
+        style: TextStyle(
+          color: Colors.yellow[700],
         ),
-        actions: <Widget>[
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () => _opentransactionFormModal(context),
-          )
-        ],
       ),
+      actions: <Widget>[
+        if (isLandscape)
+          IconButton(
+            icon: Icon(_showChart ? Icons.list : Icons.trending_up),
+            onPressed: () {
+              setState(() {
+                _showChart = !_showChart;
+              });
+            },
+          ),
+        IconButton(
+          icon: const Icon(Icons.add),
+          onPressed: () => _opentransactionFormModal(context),
+        ),
+      ],
+    );
+    final availabelHeight = MediaQuery.of(context).size.height -
+        appBar.preferredSize.height -
+        MediaQuery.of(context).padding.top;
+    return Scaffold(
+      appBar: appBar,
       body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Chart(recentTransaction: _recentTransactions),
-            TransactionList(_transactions, _removeTransaction),
+            if (_showChart || !isLandscape)
+              SizedBox(
+                height: availabelHeight * (isLandscape ? 0.7 : 0.25),
+                child: Chart(recentTransaction: _recentTransactions),
+              ),
+            if (!_showChart || !isLandscape)
+              SizedBox(
+                height: availabelHeight * 0.50,
+                child: TransactionList(_transactions, _removeTransaction),
+              ),
           ],
         ),
       ),

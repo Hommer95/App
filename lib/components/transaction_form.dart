@@ -44,79 +44,86 @@ class _TransactionFormState extends State<TransactionForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      elevation: 5,
-      child: Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: _titleController,
-              onSubmitted: (_) => _submitForm(),
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.grey[850],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-                labelText: 'Titulo',
-              ),
-            ),
-            TextField(
-              controller: _valueController,
-              onSubmitted: (_) => _submitForm(),
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
-              decoration: InputDecoration(
-                labelStyle: TextStyle(
-                  color: Colors.grey[850],
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15,
-                ),
-                labelText: 'Valor (R\$)',
-              ),
-            ),
-            SizedBox(
-              height: 70,
-              child: Row(
-                children: <Widget>[
-                  Expanded(
-                    child: Text(
-                      // ignore: unnecessary_null_comparison
-                      _selectedDate == null
-                          ? 'Nenhuma Data Selecionada!'
-                          : 'Data Selecionada: ${DateFormat('d/M/y').format(_selectedDate)}',
-                    ),
+    return SingleChildScrollView(
+      child: Card(
+        elevation: 5,
+        child: Padding(
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 10,
+            left: 10,
+            bottom: 10 + MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                controller: _titleController,
+                onSubmitted: (_) => _submitForm(),
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                    color: Colors.grey[850],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
                   ),
-                  TextButton(
-                    style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all<Color>(
-                            Colors.yellow[700]!)),
-                    onPressed: _showDatePicker,
-                    child: const Text(
-                      'Selecionar Data',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                  labelText: 'Titulo',
+                ),
+              ),
+              TextField(
+                controller: _valueController,
+                onSubmitted: (_) => _submitForm(),
+                keyboardType:
+                    const TextInputType.numberWithOptions(decimal: true),
+                decoration: InputDecoration(
+                  labelStyle: TextStyle(
+                    color: Colors.grey[850],
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                  labelText: 'Valor (R\$)',
+                ),
+              ),
+              SizedBox(
+                height: 70,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Text(
+                        // ignore: unnecessary_null_comparison
+                        _selectedDate == null
+                            ? 'Nenhuma Data Selecionada!'
+                            : 'Data Selecionada: ${DateFormat('d/M/y').format(_selectedDate)}',
                       ),
                     ),
-                  )
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                ElevatedButton(
-                  style: ButtonStyle(
-                    foregroundColor:
-                        MaterialStateProperty.all<Color>(Colors.yellow[700]!),
-                  ),
-                  onPressed: _submitForm,
-                  child: const Text('Nova Transação'),
+                    TextButton(
+                      style: ButtonStyle(
+                          foregroundColor: MaterialStateProperty.all<Color>(
+                              Colors.yellow[700]!)),
+                      onPressed: _showDatePicker,
+                      child: const Text(
+                        'Selecionar Data',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-              ],
-            )
-          ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      foregroundColor:
+                          MaterialStateProperty.all<Color>(Colors.yellow[700]!),
+                    ),
+                    onPressed: _submitForm,
+                    child: const Text('Nova Transação'),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
