@@ -84,6 +84,15 @@ class _MyHomePageState extends State<MyHomePage> {
         });
   }
 
+  Widget _getIconButton(IconData icon, Function() fn) {
+    return Platform.isIOS
+        ? GestureDetector(
+            onTap: fn,
+            child: Icon(icon),
+          )
+        : IconButton(icon: Icon(icon), onPressed: fn);
+  }
+
   @override
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
@@ -92,17 +101,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final actions = <Widget>[
       if (isLandscape)
-        IconButton(
-          icon: Icon(_showChart ? Icons.list : Icons.trending_up),
-          onPressed: () {
+        _getIconButton(
+          _showChart ? Icons.list : Icons.trending_up,
+          () {
             setState(() {
               _showChart = !_showChart;
             });
           },
         ),
-      IconButton(
-        icon: const Icon(Icons.add),
-        onPressed: () => _opentransactionFormModal(context),
+      _getIconButton(
+        Platform.isIOS ? CupertinoIcons.add : Icons.add,
+        () => _opentransactionFormModal(context),
       ),
     ];
 
