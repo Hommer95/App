@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'adaptative_button.dart';
+import 'adaptive_text_field.dart';
+import 'adaptative_date_picker.dart';
 
 class TransactionForm extends StatefulWidget {
   final void Function(String, double, DateTime) onSubmit;
@@ -25,23 +28,6 @@ class _TransactionFormState extends State<TransactionForm> {
     widget.onSubmit(title, value, _selectedDate);
   }
 
-  _showDatePicker() {
-    showDatePicker(
-      context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2019),
-      lastDate: DateTime.now(),
-    ).then((pickedDate) {
-      if (pickedDate == null) {
-        return;
-      }
-
-      setState(() {
-        _selectedDate = pickedDate;
-      });
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -56,70 +42,38 @@ class _TransactionFormState extends State<TransactionForm> {
           ),
           child: Column(
             children: <Widget>[
-              TextField(
+              AdaptativeTextField(
                 controller: _titleController,
                 onSubmitted: (_) => _submitForm(),
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(
-                    color: Colors.grey[850],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                  labelText: 'Titulo',
-                ),
+                label: 'Titulo',
               ),
-              TextField(
+              AdaptativeTextField(
+                label: 'Valor (R\$)',
                 controller: _valueController,
-                onSubmitted: (_) => _submitForm(),
                 keyboardType:
                     const TextInputType.numberWithOptions(decimal: true),
-                decoration: InputDecoration(
-                  labelStyle: TextStyle(
-                    color: Colors.grey[850],
-                    fontWeight: FontWeight.bold,
-                    fontSize: 15,
-                  ),
-                  labelText: 'Valor (R\$)',
-                ),
+                onSubmitted: (_) => _submitForm(),
               ),
-              SizedBox(
-                height: 70,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: Text(
-                        // ignore: unnecessary_null_comparison
-                        _selectedDate == null
-                            ? 'Nenhuma Data Selecionada!'
-                            : 'Data Selecionada: ${DateFormat('d/M/y').format(_selectedDate)}',
-                      ),
-                    ),
-                    TextButton(
-                      style: ButtonStyle(
-                          foregroundColor: MaterialStateProperty.all<Color>(
-                              Colors.yellow[700]!)),
-                      onPressed: _showDatePicker,
-                      child: const Text(
-                        'Selecionar Data',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-              ),
+              AdapativeDatePicker(
+                  selectedDate: _selectedDate,
+                  onDateChanged: (newDate) {
+                    setState(() {
+                      _selectedDate = newDate;
+                    });
+                  }),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: <Widget>[
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      foregroundColor:
-                          MaterialStateProperty.all<Color>(Colors.yellow[700]!),
-                    ),
-                    onPressed: _submitForm,
-                    child: const Text('Nova Transação'),
-                  ),
+                  AdaptativeButton(
+                      label: 'Nova Transação', onPressed: _submitForm),
+                  // ElevatedButton(
+                  //   style: ButtonStyle(
+                  //     foregroundColor:
+                  //         MaterialStateProperty.all<Color>(Colors.yellow[700]!),
+                  //   ),
+                  //   onPressed: _submitForm,
+                  //   child: const Text('Nova Transação'),
+                  // ),
                 ],
               )
             ],
